@@ -1,6 +1,17 @@
 body {
-    padding-left: 150px;
-    padding-right: 150px;
+    margin-left: 150px;
+    margin-right: 150px;
+    font-family: 'Roboto', sans-serif;
+}
+
+div.padded {
+    border: green solid 0px;
+    padding: 20px;
+}
+
+div#intro {
+    position: relative;
+    width: 960px;
 }
 
 svg {
@@ -14,7 +25,7 @@ svg {
     position: relative;
     width: 1000px;
     height: 700px;
-    border: 1px #000 solid;
+    border: 0px #000 solid;
     overflow: hidden;
 }
 
@@ -32,6 +43,7 @@ svg path {
     left: 10px;
     width: 10px;
     height: 10px;
+    /*border: solid wheat 1px; */
 }
 
 #rocket {
@@ -41,4 +53,34 @@ svg path {
     left: 450px;
     width: 10px;
     height: 10px;
+}
+
+#astronaut {
+    position: relative;
+    left: 10px;
+    visibility: hidden;
+}
+
+div.message {
+    width: 960px;
+    text-align: center;
+    position: relative;
+    display: block;
+    font-weight: bold;
+    color: white;
+}
+
+div.success {
+    background-color: teal;
+    display: none;
+}
+
+div.fail {
+    background-color: #990033;
+    display: none;
+}
+
+button {
+    width: 90px;
+    height: 40px;
 }

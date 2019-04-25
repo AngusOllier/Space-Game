@@ -2,21 +2,23 @@
 <html>
 
 <head>
-    <title></title>
+    <title>Moon Shot Navigator</title>
+    <meta charset='utf-8'>
     <script src="anime.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
 </head>
 
 <body>
-    <div><h3>Moon Shot Navigator</h3>
+    <div id="intro" class="padded">
+        <h1>Moon Shot Navigator</h1>
         <p>The Moon takes about 27 days to orbit the Earth.</p>
-       <p> In this game,I have speeded the rockets up so instead of taking 3 days for the 
-        rocket to get to the moon it will take 3 seconds and instead of taking 27 days for the moon to
-        get around the Earth it will take 14 seconds</p>
-        <p>Note:The moon is 384,400 kilometers from Earth so no wonder it takes 3 days to get to the moon</p>
-        <h3>How to Play</h3>
-       <p> Your mission to get to the moon but you have to time it right otherwise your
-        explorers will be destroyed</p>
+        <p>Note: The Moon is 384,400 kilometers from Earth, so no wonder it takes 3 days to get to the Moon,
+            even travelling at ???? km per hour.</p>
+        <p>In this game, I have speeded things up so what would really take 1 day takes 1 second.</p>
+        <h2>How to Play</h2>
+        <p> Your mission to get to the Moon, but you have to time it right otherwise your
+            explorers will be destroyed. When you think it's time to blast off, click the button.</p>
     </div>
     <div id="game-panel">
         <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
@@ -26,19 +28,36 @@
                      A 1 1 0 0 1 900 700" />
         </svg>
         <div id="moon">
-            <img src="moon.png"></img>
+            <img id="astronaut" src="astronaut.png" />
+            <img src="moon.png" />
         </div>
         <div id="rocket">
-            <img src="rocket.png"></img>
+            <img src="rocket.png" />
         </div>
     </div>
-    <button id="restart">Restart</button>
-    <button id="launch">Blast Off</button>
+    <div class="padded success message">
+        Well done, your astronaut has landed.
+    </div>
+    <div class="padded fail message">
+        Oh no, you missed. Your rocket will now drift though space until you run out of oxygen. Sorry!
+    </div>
+    <div id="buttons" class="padded">
+        <button id="restart">Restart</button>
+        <button id="launch">Blast Off</button>
+    </div>
     <script>
         var rocket = anime({
             targets: '#rocket',
             translateY: -300,
-            duration: 5000,
+            duration: 3000,
+            autoplay: false,
+            complete: showAstronaut
+        });
+
+        var rocketFail = anime({
+            targets: '#rocket',
+            translateY: -900,
+            duration: 9000,
             autoplay: false
         });
 
@@ -54,35 +73,49 @@
             autoplay: true
         });
 
-        var startTime = new Date();
-        var targetTime = 2;
-        var marginError = 1;
+        var startTime = Date.now();
+        var targetTime = 4000;
+        var marginError = 1000;
 
         function checkSuccess() {
-            var clickTime = new Date();
+            var clickTime = Date.now()
             var timeTaken = clickTime - startTime;
             if ((timeTaken > targetTime - marginError) && (timeTaken < targetTime + marginError)) {
-                rocket.restart();
+                doSuccess();
             } else {
-
+                doFail();
             }
         }
 
-        function doSuccess(){
-            showSucessMessage();
-            showAstronaut();
+        function doSuccess() {
+            rocket.restart();
+            showSuccessMessage();
         }
 
-        function showSucessMessage() {
+        function doFail() {
+            rocketFail.restart();
+            showFailMessage();
+        }
 
+        function showSuccessMessage() {
+            document.querySelector('.success').style.display = 'block';
+        }
+
+        function showFailMessage() {
+            document.querySelector('.fail').style.display = 'block';
         }
 
         function showAstronaut() {
-
+            document.querySelector('#astronaut').style.visibility = 'visible';
         }
 
-        document.querySelector('#launch').onclick = rocket.restart;
-        //document.querySelector('#restart').onclick = location.reload(false);
+        function reload() {
+            location.reload(false);
+            return false;
+        }
+
+        document.querySelector('#launch').onclick = checkSuccess;
+        document.querySelector('#restart').onclick = reload;
 
     </script>
 
