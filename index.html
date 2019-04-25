@@ -8,22 +8,81 @@
 </head>
 
 <body>
-    <button class="play-blue">Animate Blue</button>
-    <svg version="1.1" baseProfile="full" width="800" height="500" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="#2E4053" />
-        <path d="M 10 500
-         A 200 200 0 0 1 790 500" stroke="white" stroke-width="2" fill-opacity="0" />
-    </svg>
+    <div>Moon Shot Navigator
+        The Moon takes about 27 days to orbit the Earth.
+        In this game,
+        How to Play
+        Your mission to get to the moon but you have to time it right otherwise your
+        explorers will be destroyed
+    </div>
+    <div id="game-panel">
+        <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#2E4053" />
+            <!-- circular arc starting at (0,700) ending at (900,700) -->
+            <path d="M 0 700
+                     A 1 1 0 0 1 900 700" />
+        </svg>
+        <div id="moon">
+            <img src="moon.png"></img>
+        </div>
+        <div id="rocket">
+            <img src="rocket.png"></img>
+        </div>
+    </div>
+    <button id="restart">Restart</button>
+    <button id="launch">Blast Off</button>
     <script>
-        var blue = anime({
-            targets: '.blue',
-            translateY: 200,
+        var rocket = anime({
+            targets: '#rocket',
+            translateY: -300,
+            duration: 5000,
             autoplay: false
         });
-        document.querySelector('.play-blue').onclick = blue.restart;
+
+        var path = anime.path('#game-panel path');
+        var motionPath = anime({
+            targets: '#moon',
+            translateX: path('x'),
+            translateY: path('y'),
+            easing: 'linear',
+            duration: 14000,
+            //direction: 'alternate',   
+            loop: false,
+            autoplay: true
+        });
+
+        var startTime = new Date();
+        var targetTime = 2;
+        var marginError = 1;
+
+        function checkSuccess() {
+            var clickTime = new Date();
+            var timeTaken = clickTime - startTime;
+            if ((timeTaken > targetTime - marginError) && (timeTaken < targetTime + marginError)) {
+                rocket.restart();
+            } else {
+
+            }
+        }
+
+        function doSuccess(){
+            showSucessMessage();
+            showAstronaut();
+        }
+
+        function showSucessMessage() {
+
+        }
+
+        function showAstronaut() {
+
+        }
+
+        document.querySelector('#launch').onclick = rocket.restart;
+        //document.querySelector('#restart').onclick = location.reload(false);
 
     </script>
-    <div>Moon Shot Navigator How to Play Your mission to get to the moon but you have to time it right otherwise your explorers will be destroyed</div>
+
 </body>
 
 </html>
