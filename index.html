@@ -6,7 +6,7 @@
     <meta charset='utf-8'>
     <script src="anime.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 
 <body>
@@ -14,10 +14,10 @@
         <h1>Moon Shot Navigator</h1>
         <p>The Moon takes about 27 days to orbit the Earth.</p>
         <p>Note: The Moon is 384,400 kilometers from Earth, so no wonder it takes 3 days to get to the Moon,
-            even travelling at ???? km per hour.</p>
+            even travelling at about 5,000 km per hour.</p>
         <p>In this game, I have speeded things up so what would really take 1 day takes 1 second.</p>
         <h2>How to Play</h2>
-        <p> Your mission to get to the Moon, but you have to time it right otherwise your
+        <p> Your mission is to get to the Moon, but you have to time it right otherwise your
             explorers will be destroyed. When you think it's time to blast off, click the button.</p>
     </div>
     <div id="game-panel">
@@ -51,14 +51,15 @@
             translateY: -300,
             duration: 3000,
             autoplay: false,
-            complete: showAstronaut
+            complete: doSuccess
         });
 
         var rocketFail = anime({
             targets: '#rocket',
             translateY: -900,
             duration: 9000,
-            autoplay: false
+            autoplay: false,
+            complete: doFail
         });
 
         var path = anime.path('#game-panel path');
@@ -81,19 +82,18 @@
             var clickTime = Date.now()
             var timeTaken = clickTime - startTime;
             if ((timeTaken > targetTime - marginError) && (timeTaken < targetTime + marginError)) {
-                doSuccess();
+                rocket.restart();
             } else {
-                doFail();
+                rocketFail.restart();
             }
         }
 
         function doSuccess() {
-            rocket.restart();
+            showAstronaut();
             showSuccessMessage();
         }
 
         function doFail() {
-            rocketFail.restart();
             showFailMessage();
         }
 
