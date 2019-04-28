@@ -4,8 +4,11 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+div {
+    border: green solid 1px; 
+}
+
 div.padded {
-    border: green solid 0px;
     padding: 20px;
 }
 
@@ -70,14 +73,20 @@ div.message {
     color: white;
 }
 
+div.message2 {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
 div.success {
     background-color: teal;
-    display: none;
+    /*display: none;*/
 }
 
 div.fail {
-    background-color: #990033;
-    display: none;
+    background-color: firebrick;
+    /*display: none;*/
 }
 
 button {
