@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="padded">
+    <div id="intro" class="padded">
         <h1>Moon Shot Navigator</h1>
         <p>The Moon takes about 27 days to orbit the Earth.</p>
         <p>Note: The Moon is 384,400 kilometers from Earth, so no wonder it takes 3 days to get to the Moon,
@@ -20,19 +20,20 @@
         <p> Your mission is to get to the Moon, but you have to time it right otherwise your
             explorers will be destroyed. When you think it's time to blast off, click the button.</p>
     </div>
-    <div id="game">
+    <div id="game-panel">
         <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 50 700
-                A 1 1 0 0 1 950 700" />
+            <rect width="100%" height="100%" fill="#2E4053" />
+            <!-- circular arc starting at (0,700) ending at (900,700) -->
+            <path d="M 0 700
+                     A 1 1 0 0 1 900 700" />
         </svg>
         <div id="moon">
             <img id="astronaut" src="astronaut.png" />
-            <img id="moon-img" src="moon.png" />
+            <img src="moon.png" />
         </div>
         <div id="rocket">
             <img src="rocket.png" />
         </div>
-
     </div>
     <div class="padded success message">
         Well done, your astronaut has landed.
@@ -45,7 +46,23 @@
         <button id="launch">Blast Off</button>
     </div>
     <script>
-        var path = anime.path('#game path');
+        var rocket = anime({
+            targets: '#rocket',
+            translateY: -300,
+            duration: 3000,
+            autoplay: false,
+            complete: doSuccess
+        });
+
+        var rocketFail = anime({
+            targets: '#rocket',
+            translateY: -900,
+            duration: 9000,
+            autoplay: false,
+            complete: doFail
+        });
+
+        var path = anime.path('#game-panel path');
         var motionPath = anime({
             targets: '#moon',
             translateX: path('x'),
@@ -57,30 +74,11 @@
             autoplay: true
         });
 
-        var rocket = anime({
-            targets: '#rocket',
-            translateY: -300,
-            duration: 3000,
-            autoplay: false,
-            complete: doSuccess,
-            easing: 'linear'
-        });
-
-        var rocketFail = anime({
-            targets: '#rocket',
-            translateY: -900,
-            duration: 9000,
-            autoplay: false,
-            complete: doFail,
-            easing: 'linear'
-        });
-
         var startTime = Date.now();
         var targetTime = 4000;
         var marginError = 1000;
 
         function checkSuccess() {
-            document.getElementById("launch").disabled = true;
             var clickTime = Date.now()
             var timeTaken = clickTime - startTime;
             if ((timeTaken > targetTime - marginError) && (timeTaken < targetTime + marginError)) {
